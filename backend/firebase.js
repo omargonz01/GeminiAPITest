@@ -3,8 +3,6 @@ const Firebase_API_Key = process.env.Firebase_API_Key;
 const App_ID = process.env.App_ID;
 
 // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getFirestore } from "firebase/firestore";
 const { initializeApp } = require("firebase/app");
 const { getFirestore } = require("firebase/firestore");
 // TODO: Add SDKs for Firebase products that you want to use
@@ -28,4 +26,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firestore
-module.exports = { db: getFirestore(app) };
+const db = getFirestore(app);
+
+module.exports = { db };

@@ -18,22 +18,45 @@ const genAI = new GoogleGenerativeAI(API_Key);
 const Firebase_API_Key = process.env.Firebase_API_Key;
 const App_ID = process.env.APP_ID;
 
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: Firebase_API_Key,
-  authDomain: "testbite-react.firebaseapp.com",
-  projectId: "testbite-react",
-  storageBucket: "testbite-react.appspot.com",
-  messagingSenderId: "289398574178",
-  appId: App_ID,
-  measurementId: "G-VQEX2LYWSX",
-};
-firebase.initializeApp(firebaseConfig);
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+app.get("/test-firestore", async (req, res) => {
+  const testData = {
+    name: "Test",
+    description: "This is a test document.",
+    dish: "Test Dish",
+    ingredients: [
+      {
+        name: "Test Ingredient",
+        quantity: 1,
+        calories: 100,
+        macronutrients: {
+          fat: 10,
+          carbohydrates: 20,
+          protein: 30,
+        },
+      },
+    ],
+  };
+
+  try {
+    const docRef = await db.collection("test-collection").add(testData);
+    res.json({
+      success: true,
+      message: `Document written with ID: ${docRef.id}`,
+    });
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    res.json({
+      success: false,
+      message: "Error adding document to Firestore.",
+    });
+  }
+});
 
 app.post("/analyze-image", upload.single("image"), async (req, res) => {
   if (!req.file) {
